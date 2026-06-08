@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#1f7a4d"/>
+  <!-- truelle / mur stylisé -->
+  <g fill="#ffffff">
+    <rect x="112" y="300" width="80" height="56" rx="6"/>
+    <rect x="200" y="300" width="80" height="56" rx="6"/>
+    <rect x="288" y="300" width="80" height="56" rx="6"/>
+    <rect x="156" y="364" width="80" height="56" rx="6"/>
+    <rect x="244" y="364" width="80" height="56" rx="6"/>
+  </g>
+  <!-- toit -->
+  <path d="M256 96 L400 224 L112 224 Z" fill="#f4a259"/>
+  <rect x="150" y="224" width="212" height="60" rx="6" fill="#ffffff"/>
+</svg>

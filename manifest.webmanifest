@@ -1,0 +1,15 @@
+{
+  "name": "BâtiDevis — Estimateur de construction",
+  "short_name": "BâtiDevis",
+  "description": "Estimez les quantités de ciment, fer, sable, gravier et le coût de votre construction aux prix du marché sénégalais.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f7f5",
+  "theme_color": "#1f7a4d",
+  "lang": "fr",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

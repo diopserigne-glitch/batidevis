@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f7a4d" />
+  <meta name="description" content="Estimez les quantités de ciment, fer, sable, gravier et le coût de votre construction aux prix du marché sénégalais." />
+  <title>BâtiDevis — Estimateur de construction</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="icon.svg" alt="" class="brand-logo" width="36" height="36" />
+      <div>
+        <h1>BâtiDevis</h1>
+        <p class="tagline">Estimateur de matériaux &amp; coûts — Sénégal</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="btn-fournisseurs" class="ghost-btn" type="button" aria-label="Fournisseurs">🏪</button>
+      <button id="btn-prix" class="ghost-btn" type="button" aria-label="Modifier les prix">⚙️ Prix</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ====================== CALCULATEUR ====================== -->
+    <section class="card" aria-labelledby="calc-title">
+      <h2 id="calc-title">Calculer un élément</h2>
+
+      <label class="field">
+        <span>Type d'élément</span>
+        <select id="type-element">
+          <optgroup label="Bâtiment complet">
+            <option value="villa">🏠 Villa (R, R+1, R+2)</option>
+          </optgroup>
+          <optgroup label="Éléments">
+            <option value="dalle">Dalle pleine (plancher / terrasse)</option>
+            <option value="hourdis">Plancher à hourdis (corps creux)</option>
+            <option value="mur">Mur en agglos (parpaings)</option>
+            <option value="poteau">Poteau (béton armé)</option>
+            <option value="poutre">Poutre / chaînage</option>
+            <option value="semelle">Semelle de fondation (filante)</option>
+          </optgroup>
+        </select>
+      </label>
+
+      <div id="inputs" class="inputs-grid"><!-- champs dynamiques --></div>
+
+      <details class="advanced">
+        <summary>Réglages avancés (dosage &amp; ferraillage)</summary>
+        <div id="inputs-avances" class="inputs-grid"></div>
+      </details>
+
+      <div class="actions">
+        <button id="btn-calculer" class="primary-btn" type="button">Calculer</button>
+        <button id="btn-ajouter" class="secondary-btn" type="button">+ Ajouter au projet</button>
+      </div>
+
+      <div id="resultat" class="result hidden" aria-live="polite"></div>
+    </section>
+
+    <!-- ====================== PROJET ====================== -->
+    <section class="card" aria-labelledby="projet-title">
+      <div class="card-head">
+        <h2 id="projet-title">Mon projet</h2>
+        <button id="btn-vider" class="link-btn" type="button">Vider</button>
+      </div>
+      <div class="projet-toolbar">
+        <input id="projet-nom" type="text" placeholder="Nom du projet (ex : Villa Keur Massar)" />
+        <button id="btn-enregistrer-projet" class="secondary-btn" type="button">💾 Enregistrer</button>
+        <select id="select-projet" aria-label="Charger un projet">
+          <option value="">📂 Charger un projet…</option>
+        </select>
+        <button id="btn-supprimer-projet" class="link-btn" type="button" aria-label="Supprimer le projet sélectionné">🗑️</button>
+      </div>
+      <div id="liste-projet" class="liste-projet"></div>
+      <div id="total-projet" class="total-projet hidden"></div>
+    </section>
+
+  </main>
+
+  <!-- ====================== MODALE PRIX ====================== -->
+  <div id="modale-prix" class="modale hidden" role="dialog" aria-modal="true" aria-labelledby="prix-title">
+    <div class="modale-box">
+      <div class="card-head">
+        <h2 id="prix-title">Prix du marché (FCFA)</h2>
+        <button id="btn-fermer-prix" class="link-btn" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <p class="hint">Prix indicatifs Dakar 2026. Ajuste-les selon ton fournisseur — ils sont sauvegardés sur ton appareil.</p>
+      <div id="prix-grid" class="inputs-grid"></div>
+      <div class="actions">
+        <button id="btn-reset-prix" class="secondary-btn" type="button">Réinitialiser</button>
+        <button id="btn-enregistrer-prix" class="primary-btn" type="button">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== MODALE FOURNISSEURS ====================== -->
+  <div id="modale-fournisseurs" class="modale hidden" role="dialog" aria-modal="true" aria-labelledby="four-title">
+    <div class="modale-box">
+      <div class="card-head">
+        <h2 id="four-title">Fournisseurs de matériaux</h2>
+        <button id="btn-fermer-four" class="link-btn" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <p class="hint">Annuaire indicatif — contacte directement le fournisseur pour les prix et la disponibilité. Filtre par matériau&nbsp;:</p>
+      <label class="field">
+        <span>Matériau recherché</span>
+        <select id="filtre-materiau">
+          <option value="">Tous les matériaux</option>
+          <option value="ciment">Ciment</option>
+          <option value="fer">Fer à béton</option>
+          <option value="sable">Sable</option>
+          <option value="gravier">Gravier</option>
+          <option value="agglos">Agglos / parpaings</option>
+        </select>
+      </label>
+      <div id="liste-fournisseurs" class="liste-fournisseurs"></div>
+    </div>
+  </div>
+
+  <!-- Devis imprimable (hors écran, visible uniquement à l'impression / PDF) -->
+  <div id="devis-print" class="devis-print" aria-hidden="true"></div>
+
+  <footer class="app-footer">
+    <p>Les quantités sont des <strong>estimations</strong> basées sur les pratiques courantes (béton armé dosé à 350&nbsp;kg/m³). Prévois une marge et fais valider par un professionnel pour les ouvrages porteurs.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
